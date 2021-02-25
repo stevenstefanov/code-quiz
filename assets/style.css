@@ -1,8 +1,14 @@
 body {
-    background-color: rgb(43, 39, 39);
+    background-color: rgb(53, 52, 52);
+    color: rgb(196, 196, 174);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
 }
 
 h1 {
     text-align: center;
-    color: rgb(196, 196, 174);
+    margin-top: 100px;
 }
