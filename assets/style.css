@@ -12,3 +12,17 @@ h1 {
     text-align: center;
     margin-top: 100px;
 }
+
+.box {
+    border: solid rgb(196, 196, 174) 5px;
+    width: 700px;
+    margin: 0 auto;
+}
+
+.field {
+    padding: 60px 120px;
+}
+
+#questions {
+    margin: 40px;
+}
