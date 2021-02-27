@@ -91,13 +91,97 @@ function showQuestion() {
     ask.textContent = questions[questionOrder].prompt;
     ask.id = "ask";
     questionsEl.appendChild(ask);
-    for (i = 0; i < question.choices.length; i++);
-    var choice = document.createElement('button');
+    for (i = 0; i < question.choices.length; i++) {
+        var choice = document.createElement('button');
         choice.textContent = question.choices[i];
         choice.id = "button" + (i + 1);
         choice.value = i;
         answersEl.appendChild(choice);
-}
+    }
+    var buttonOne = document.getElementById("button1");
+    var buttonTwo = document.getElementById("button2");
+    var buttonThree = document.getElementById("button3");
+    var buttonFour = document.getElementById("button4");
+    buttonOne.addEventListener('click', checkAnswer);
+    buttonTwo.addEventListener('click', checkAnswer);
+    buttonThree.addEventListener('click', checkAnswer);
+    buttonFour.addEventListener('click', checkAnswer);
+};
+
+function checkAnswer() {
+    var ask = document.getElementById("ask");
+    var question = questions[questionOrder];
+    var buttonOne = document.getElementById("button1");
+    var buttonTwo = document.getElementById("button2");
+    var buttonThree = document.getElementById("button3");
+    var buttonFour = document.getElementById("button4");
+
+    if (this.value == question.correct) {
+        correctFalse.textContent("Correct");
+        currentScore++;
+        questionOrder++;
+        questionsEl.removeChild(ask);
+        answersEl.removeChild(buttonOne);
+        answersEl.removeChild(buttonTwo);
+        answersEl.removeChild(buttonThree);
+        answersEl.removeChild(buttonFour);
+        if (questionOrder < questions.length){
+            showQuestion();
+        }
+    } else {
+        correctFalse.textContent("Wrong");
+        countTime -= 3;
+        setTimeout(function() {
+            correctFalse.textContent("Wrong");
+        }, 500);
+    }
+};
+
+function gameEnd() {
+    var target = document.getElementById('name');
+    var form = document.createElement('form');
+    var div = document.createElement('div');
+    var label = document.createElement('label');
+    var field = document.createElement('input');
+    var submit = document.createElement('button');
+    label.textContent = "Please enter your name: ";
+    form.id = "#form";
+    label.for = "player";
+    label.type = "text"
+    submit.id = "submitName";
+    field.id = "player";
+    field.type = "text";
+    field.name = "player";
+    submit.textContent = "Submit";
+    target.appendChild(form);
+    form.appendChild(div);
+    div.appendChild(label);
+    div.appendChild(field);
+    target.appendChild(submit);
+    submit.addEventListener("click", saveName);
+};
+
+function saveName(event) {
+    event.preventDefault();
+    var playerName = player.value.trim();
+
+    if (currentScore > highScore) {
+        highScore = currentScore;
+        highScoreEl.textContent = playerName + ", " + currentScore;
+    }
+
+    var user = {
+        name: playerName,
+        score: score,
+    }
+    leaderboard.push(user);
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+   
+    var target = document.getElementById('name');
+    while (target.firstChild) {
+        target.removeChild(target.firstChild);
+    }
+    buildLeaderboard();
 
 
 
