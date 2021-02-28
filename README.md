@@ -26,7 +26,7 @@ This project is a great example of a multiple choice, timed quiz that keeps high
 
 ## Project Screenshot  
 
-![Project Screenshot](assets/images/screenshot_stevenstefanov.png)
+![Project Screenshot](assets/screenshot_stevenstefanov.png)
  
 ## Link to Deployed Project  
 
