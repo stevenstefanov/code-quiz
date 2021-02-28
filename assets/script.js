@@ -1,23 +1,33 @@
 // Assigning variables to HTML elements
-var startButtonEl = document.getElementById("button");
-var questionsEl = document.getElementById("questions");
+var startButtonEl = document.getElementById("start");
+var questionEl = document.getElementById("question");
+var currentScoreEl = document.getElementById("score");
 var answersEl = document.getElementById("answers");
-var timerEl = document.getElementById("timer");
-var correctFalse = document.getElementById("correct-false");
-var highScoreEl = document.getElementById("highschore");
+var timerEl = document.getElementById("countTime");
+var correctText = document.getElementById("correctText");
+var wrongText = document.getElementById("wrongText");
+var highScoreEl = document.getElementById("highScore");
 var body = document.getElementById("body");
-var playerName = document.getElementById("name");
+var playerName = document.getElementById("playerName");
 
 // Defining global variables
-var currentScore = 0;
+var score = 0;
 var highScore = 0;
-var leaderboard = [];
-var timer = 10;
+var leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+var timer;
 var countTime;
 var questionOrder = 0;
+var ask;
+var buttonOne;
+var buttonTwo;
+var buttonThree;
+var buttonFour;
+var answers;
+var question;
+var playButton;
 
-// push start button to begin game
-buttonEl.addEventListener("click", beginGame);
+// Push start button to begin game
+startButtonEl.addEventListener("click", beginGame);
 
 //List of questions
 var questions = [
@@ -43,108 +53,117 @@ var questions = [
     },
 ]
 
-// Start the game by pressing start button
-function beginGame() {
-    startButtonEl.disabled = true;
-    countTime = 10;
-    timerEl.textContent = countTime;
-    askQuestion();
-    beginTimer();
+// Initialize
+init();
+
+function init() {
+    returnHighscore();
+}
+
+// Returns the current highscore
+function returnHighscore() {
+    if (JSON.parse(localStorage.getItem("leaderboard"))) {
+        leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
+        leaderboard.sort((a, b) => b.score - a.score);
+        for (var i = 0; i < 1; i++) {
+            highScoreEl.textContent = leaderboard[i].name + " : " + leaderboard[i].score;
+        }
+    }
 };
 
-// Timer function
+// Function to begin the game
+function beginGame() {
+    startButtonEl.disabled = true;
+    beginTimer();
+    cueQuestion();
+};
+
+// Starts the timer and sets the trigger for the end of the game
 function beginTimer() {
-    // hide start button - startButtonEl.setAttribute("class")
-    timer = intervals(function() {
-        countTime--;
-        timerEl.textContent = countTime;
-        if (countTime <= 0 || questionOrder == questions.lengh) {
-            correctFalse.textContent = "Correct!";
-            if (questionOrder < questions.length) {
-                var ask = document.getElementById("ask");
-                var buttonOne = document.getElementById("button1");
-                var buttonTwo = document.getElementById("button2");
-                var buttonThree = document.getElementById("button3");
-                var buttonFour = document.getElementById("button4");
-                questionsEl.removeChild(ask);
-                answersEl.removeChild(buttonOne);
-                answersEl.removeChild(buttonTwo);
-                answersEl.removeChild(buttonThree);
-                answersEl.removeChild(buttonFour);
+    startButtonEl.setAttribute("class", "d-none");
+    countTime = 50;
+    timerEl.textContent = countTime;
+    timer = setInterval(function() {
+      countTime--;
+      timerEl.textContent = countTime;
+      // If time is out, clear out the question and choices and end the game
+      if (countTime <= 0 || questionOrder == questions.length) {
+        correctText.setAttribute("id", "correctText");
+        if (questionOrder < questions.length) {
+            questionEl.removeChild(ask);
+            target = answersEl;
+            while (target.firstChild) {
+                target.removeChild(target.firstChild);
             }
-            clearInterval(timer);
-            countTime = 0;
-            timerEl.textContent = countTime;
-            gameEnd();
         }
+        clearInterval(timer);
+        countTime = 0;
+        timerEl.textContent = countTime;
+        endGame();
+      }
     }, 1000);
 };
 
-// Function to begin showing questions
-
-function showQuestion() {
-    setTimeout(function() {
-        correctFalse.textContent("Correct");
-    }, 500);
-    var question = questions[questionOrder];
-    var ask = document.createElement("span");
+// Ask the questions
+function cueQuestion() {
+    setTimeout(function() { correctText.setAttribute("id", "correctText"); },1500);
+    question = questions[questionOrder];
+    ask = document.createElement('span');
+    ask.setAttribute("class", "mt-4");
     ask.textContent = questions[questionOrder].prompt;
     ask.id = "ask";
-    questionsEl.appendChild(ask);
-    for (i = 0; i < question.choices.length; i++) {
-        var choice = document.createElement('button');
+    questionEl.appendChild(ask);
+    for (var i = 0; i < question.choices.length; i++) {
+        choice = document.createElement('button');
         choice.textContent = question.choices[i];
         choice.id = "button" + (i + 1);
         choice.value = i;
+        choice.setAttribute("class", "btn-sm btn-primary px-2 mx-2 mt-1");
         answersEl.appendChild(choice);
     }
-    var buttonOne = document.getElementById("button1");
-    var buttonTwo = document.getElementById("button2");
-    var buttonThree = document.getElementById("button3");
-    var buttonFour = document.getElementById("button4");
-    buttonOne.addEventListener('click', checkAnswer);
-    buttonTwo.addEventListener('click', checkAnswer);
-    buttonThree.addEventListener('click', checkAnswer);
-    buttonFour.addEventListener('click', checkAnswer);
+    // Event listeners for answer buttons
+    buttonOne = document.querySelector("#button1");
+    buttonTwo = document.querySelector("#button2");
+    buttonThree = document.querySelector("#button3");
+    buttonFour = document.querySelector("#button4");
+    buttonOne.addEventListener('click', answerCheck);
+    buttonTwo.addEventListener('click', answerCheck);
+    buttonThree.addEventListener('click', answerCheck);
+    buttonFour.addEventListener('click', answerCheck);
 };
 
-function checkAnswer() {
-    var ask = document.getElementById("ask");
-    var question = questions[questionOrder];
-    var buttonOne = document.getElementById("button1");
-    var buttonTwo = document.getElementById("button2");
-    var buttonThree = document.getElementById("button3");
-    var buttonFour = document.getElementById("button4");
-
-    if (this.value == question.correct) {
-        correctFalse.textContent("Correct");
-        currentScore++;
+// Check if answer is correct/incorrect  
+function answerCheck() {
+    if (this.value == question.answer) {
+        correctText.setAttribute("id", "correctText.show");
+        score++;
+        currentScoreEl.textContent = score;
         questionOrder++;
-        questionsEl.removeChild(ask);
+        questionEl.removeChild(ask);
         answersEl.removeChild(buttonOne);
         answersEl.removeChild(buttonTwo);
         answersEl.removeChild(buttonThree);
         answersEl.removeChild(buttonFour);
         if (questionOrder < questions.length){
-            showQuestion();
+            cueQuestion();
         }
     } else {
-        correctFalse.textContent("Wrong");
+        wrongText.setAttribute("id", "wrongText.show");
         countTime -= 3;
-        setTimeout(function() {
-            correctFalse.textContent("Wrong");
-        }, 500);
+        setTimeout(function() { wrongText.setAttribute("id", "wrongText"); }, 500);
     }
 };
 
-function gameEnd() {
-    var target = document.getElementById('name');
+// Ends game and submits name
+function endGame() {
+    var target = document.querySelector('#playerName');
     var form = document.createElement('form');
     var div = document.createElement('div');
     var label = document.createElement('label');
     var field = document.createElement('input');
     var submit = document.createElement('button');
     label.textContent = "Please enter your name: ";
+    label.setAttribute("class", "mr-2")
     form.id = "#form";
     label.for = "player";
     label.type = "text"
@@ -153,38 +172,69 @@ function gameEnd() {
     field.type = "text";
     field.name = "player";
     submit.textContent = "Submit";
+    submit.setAttribute("class", "btn-sm btn-success px-4 mt-2");
+    field.setAttribute("class", "form-control");
+    div.setAttribute("class", "form-inline");
     target.appendChild(form);
     form.appendChild(div);
     div.appendChild(label);
     div.appendChild(field);
     target.appendChild(submit);
-    submit.addEventListener("click", saveName);
+    submit.addEventListener("click", savePlayerName);
 };
 
-function saveName(event) {
+// Saves player's name if highscore is new
+function savePlayerName(event) {
     event.preventDefault();
     var playerName = player.value.trim();
-
-    if (currentScore > highScore) {
-        highScore = currentScore;
-        highScoreEl.textContent = playerName + ", " + currentScore;
-    }
-
     var user = {
         name: playerName,
         score: score,
     }
     leaderboard.push(user);
     localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-   
-    var target = document.getElementById('name');
+    var target = document.querySelector('#playerName');
     while (target.firstChild) {
         target.removeChild(target.firstChild);
     }
-    buildLeaderboard();
+    createLeaderboard();
+};
 
+// Create leaderboard
+function createLeaderboard() {
+    leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
+    leaderboard.sort((a, b) => b.score - a.score);
+    var leader = document.createElement('ol');
+    leader.setAttribute("class", "text-left");
+    questionEl.appendChild(leader);
+    for (var i = 0; (i < leaderboard.length) && (i <4); i++) {
+        var list = document.createElement('li');
+        list.textContent = leaderboard[i].name + " : " + leaderboard[i].score;
+        list.style = "font-size: .7em";
+        leader.appendChild(list);
+    }
+    // Create "Try Again?" button
+    var play = document.createElement('button');
+    play.id = "play"
+    play.textContent = "Try Again?"
+    playButton = document.querySelector("#tryAgain")
+    playButton.appendChild(play);
+    play.setAttribute("class", "btn btn-primary px-4");
+    play.addEventListener("click", tryAgain);
+};
 
-
-//questions 1 appears
-// timer starts
-// 
+// Offer user a chance to play again and call functions to reset game to pre-start status
+function tryAgain() {
+    startButtonEl.disabled = false;
+    startButtonEl.setAttribute("class", "btn btn-primary px-4 mt-5");
+    playButton.removeChild(play);
+    var target = document.querySelector('#question');
+    while (target.firstChild) {
+        target.removeChild(target.firstChild);
+    }
+    questionOrder = 0;
+    countTime = 0;
+    score = 0;
+    timerEl.textContent = countTime;
+    returnHighscore();
+};

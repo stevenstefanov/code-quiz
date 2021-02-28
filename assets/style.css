@@ -3,26 +3,82 @@ body {
     color: rgb(196, 196, 174);
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
+#indicator {
+float: left;
+width: 33%;
+text-align: center;
 }
 
 h1 {
+    clear: both;
     text-align: center;
-    margin-top: 100px;
+    padding-top: 200px;
 }
 
-.box {
+.card {
     border: solid rgb(196, 196, 174) 5px;
+    background-color: rgb(139, 135, 135);
     width: 700px;
     margin: 0 auto;
 }
 
-.field {
-    padding: 60px 120px;
+#start {
+    background-color: rgb(138, 44, 11);
+    border: none;
 }
 
-#questions {
-    margin: 40px;
+#ask {
+    font-size: 18px;
+}
+
+#button1 {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin: 10px;
+}
+
+#button2 {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin: 10px;
+}
+
+#button3 {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin: 10px;
+}
+
+#button4 {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin: 10px;
+}
+
+#play {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin: 10px;
+}
+
+#submitName {
+    background-color: rgb(138, 44, 11);
+    border: none;
+    margin-bottom: 10px;
+}
+
+#correctText {
+    display: none;
+}
+
+#correctText.show {
+    display: block;
+}
+
+#wrongText {
+    display: none;
+}
+
+#wrongText.show {
+    display: block;
 }
