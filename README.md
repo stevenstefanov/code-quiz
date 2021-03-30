@@ -1,4 +1,4 @@
-# code-quiz
+#code-quiz
 
 ## What is the project?
 
