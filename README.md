@@ -1,16 +1,21 @@
-# code-quiz
+# Code Quiz
 
-## What is the project?
+## Project Description
 
 This project is a multiple choice quiz on programming. It involves HTML, CSS, and JavaScript. The user is presented with 4 questions, each containing 4 options with 1 correct answer.
+
+## Project Screenshot  
+
+![Project Screenshot](assets/screenshot_stevenstefanov.png)
+![Project Screenshot](assets/screenshot1_stevenstefanov.png) 
+ 
+## Link to Deployed Project  
+
+https://stevenstefanov.github.io/code-quiz/
 
 ## What were the challenges?
 
 This website was challenging with being able to save the high score, the current score and with being able to manipulate the DOM through JavaScript.
-
-## What was updated?
-
-This project was created from scratch so nothing was updated.
 
 ## Why did I decide to do this project?
 
@@ -24,25 +29,13 @@ I learned so much more about JavaScript logic, commands, DOM manipulation. I was
 
 This project is a great example of a multiple choice, timed quiz that keeps highscores on the local storage.
 
-## Project Screenshot  
-
-![Project Screenshot](assets/screenshot_stevenstefanov.png)
- 
-## Link to Deployed Project  
-
-https://stevenstefanov.github.io/code-quiz/
-
-## Instalation
-
-No installation required for this application.
-
 ## Usage
 
-Click on the Start Quiz button, read the questions and select the correct answer on each questions. At the end of the quiz, type in your name or initials and play again.
+Click on the Start Quiz button, read the questions and select the correct answer on each questions to the best of your ability. At the end of the quiz, type in your name or initials and play again.
 
 ## Credits
 
-Thank you to Columbia's Full-Stack Web Developer bootcamp for all the assistance and for teaching me all that I have learned. Credit also goes to Google for helping me find any needed resource.
+Thank you to Columbia's Full-Stack Web Developer bootcamp for all the assistance and for teaching me all that I have learned.
 
 ## Licence
 
