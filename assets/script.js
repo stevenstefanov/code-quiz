@@ -132,7 +132,7 @@ function cueQuestion() {
     buttonFour.addEventListener('click', answerCheck);
 };
 
-// Check if answer is correct/incorrect  
+// Check if the answer is correct/incorrect  
 function answerCheck() {
     if (this.value == question.answer) {
         correctText.setAttribute("id", "correctText.show");

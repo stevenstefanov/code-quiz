@@ -13,21 +13,18 @@ This project is a multiple choice quiz on programming. It involves HTML, CSS, an
 
 https://stevenstefanov.github.io/code-quiz/
 
-## What were the challenges?
-
-This website was challenging with being able to save the high score, the current score and with being able to manipulate the DOM through JavaScript.
-
-## Why did I decide to do this project?
+## Background
 
 I want to help others who may be interested in getting into web development. Hopefully through this quiz, they will get intrigued and want to learn more afterwards.
 
-## What I learned in the process?
+## Challenges
+
+This website was challenging with being able to save the high score, the current score and with being able to manipulate the DOM through JavaScript.
+
+## Learnings
 
 I learned so much more about JavaScript logic, commands, DOM manipulation. I was also able to refresh my knowledge of some basic CSS.
 
-## What makes this project stand out?
-
-This project is a great example of a multiple choice, timed quiz that keeps highscores on the local storage.
 
 ## Usage
 
